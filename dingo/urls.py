@@ -19,5 +19,6 @@ from maths.views import math, add, sub, mul, div
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('maths/', include("maths.urls"))
+    path('maths/', include("maths.urls")),
+    path('greetings/', include("greetings.urls"))
 ]
