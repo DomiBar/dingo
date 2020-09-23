@@ -8,18 +8,46 @@ def math(request):
 
 
 def add(request, a, b):
-    return HttpResponse(float(a)+float(b))
+    a, b = int(a), int(b)
+    wynik = a+b
+    c = {"a": a, "b": b, "operacja": "+", "wynik": wynik}
+    return render(
+        request=request,
+        template_name="maths/operation.html",
+        context=c
+    )
 
 
 def sub(request, a, b):
-    return HttpResponse(float(a)-float(b))
+    a, b = int(a), int(b)
+    wynik = a-b
+    c = {"a": a, "b": b, "operacja": "-", "wynik": wynik}
+    return render(
+        request=request,
+        template_name="maths/operation.html",
+        context=c
+    )
 
 
 def mul(request, a, b):
-    return HttpResponse(float(a)*float(b))
+    a, b = int(a), int(b)
+    wynik = a*b
+    c = {"a": a, "b": b, "operacja": "*", "wynik": wynik}
+    return render(
+        request=request,
+        template_name="maths/operation.html",
+        context=c
+    )
 
 
 def div(request, a, b):
     if b == '0':
         return HttpResponse("Nie dziel przez zero")
-    return HttpResponse(float(a)/float(b))
+    a, b = int(a), int(b)
+    wynik = a/b
+    c = {"a": a, "b": b, "operacja": "/", "wynik": wynik}
+    return render(
+        request=request,
+        template_name="maths/operation.html",
+        context=c
+    )
