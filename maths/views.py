@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
-# Create your views here.
+
+from maths.models import Math
 
 
 def math(request):
@@ -42,13 +43,31 @@ def mul(request, a, b):
 
 
 def div(request, a, b):
-   if int(b) == 0:
-       wynik = "Error"
-       messages.add_message(request, messages.ERROR, "Dzielenie przez zero!")
-   else:
-       wynik = int(a) / int(b)
-   c = {"a": a, "b": b, "operacja": "/", "wynik": wynik, "title": "dzielenie"}
-   return render(
-       request=request,
-       template_name="maths/operation.html",
-       context=c)
+    if int(b) == 0:
+        wynik = "Error"
+        messages.add_message(request, messages.ERROR, "Dzielenie przez zero!")
+    else:
+        wynik = int(a) / int(b)
+    c = {"a": a, "b": b, "operacja": "/", "wynik": wynik, "title": "dzielenie"}
+    return render(
+        request=request,
+        template_name="maths/operation.html",
+        context=c)
+
+
+def maths_list(request):
+    maths = Math.objects.all()
+    return render(
+        request=request,
+        template_name="maths/list.html",
+        context={"maths": maths}
+    )
+
+
+def math_details(request, id):
+    math = Math.objects.get(id=id)
+    return render(
+        request=request,
+        template_name="maths/details.html",
+        context={"math": math}
+    )
