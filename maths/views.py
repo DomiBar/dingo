@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 
 from maths.models import Math, Result
+from maths.forms import ResultForm
 
 
 def math(request):
@@ -85,37 +86,32 @@ def math_details(request, id):
 
 
 def results_list(request):
-  if request.method == "POST":
-      value = request.POST['value'] or None
-      error = request.POST['error'] or None
-      if value and error:
-          messages.add_message(
-              request,
-              messages.ERROR,
-              "Błąd! Podano jednocześnie value i error. Podaj tylko jedną z tych wartości"
-          )
-      elif value or error:
+    if request.method == "POST":
+        form = ResultForm(data=request.POST)
 
-          Result.objects.get_or_create(
-              value=float(value),
-              error=error
-          )
-          messages.add_message(
-              request,
-              messages.SUCCESS,
-              "Utworzono nowy Result!!"
-          )
+        if form.is_valid():
+            if form.cleaned_data['error'] == '':
+                form.cleaned_data['error'] = None
+            Result.objects.get_or_create(**form.cleaned_data)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "Utworzono nowy Result!!"
+            )
+        else:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                form.errors['__all__']
+            )
 
-      else:
-          messages.add_message(
-              request,
-              messages.ERROR,
-              "Błąd! Nie podano wartości!!"
-          )
-
-  results = Result.objects.all()
-  return render(
-      request=request,
-      template_name="maths/results.html",
-      context={"results": results}
-  )
+    form = ResultForm()
+    results = Result.objects.all()
+    return render(
+        request=request,
+        template_name="maths/results.html",
+        context={
+            "results": results,
+            "form": form
+        }
+    )
