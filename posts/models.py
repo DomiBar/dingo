@@ -16,7 +16,7 @@ class Post(models.Model):
     )
 
     def __str__(self):
-        return f"{self.author}, title={self.title}"
+        return f"{self.author}, {self.title}"
 
 
 
