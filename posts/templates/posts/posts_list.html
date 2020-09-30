@@ -3,9 +3,16 @@
 {% block title %}Posts list{% endblock %}
 
 {% block content %}
-   <ul>
+   <ol>
        {% for p in posts %}
            <li><a href="{% url "posts:post_details" p.id %}">{{ p }}</a></li>
        {% endfor %}
-   </ul>
+   </ol>
+
+   <p>Tutaj możesz dodać nowy post</p>
+   <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Dodaj">
+</form>
 {% endblock %}

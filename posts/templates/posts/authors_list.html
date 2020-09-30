@@ -1,0 +1,18 @@
+{% extends "posts/base.html" %}
+
+{% block title %}Authors list{% endblock %}
+
+{% block content %}
+<ol>
+    {% for a in authors %}
+    <li><a href="{% url "posts:author_details" a.id %}">{{ a }}</a></li>
+    {% endfor %}
+</ol>
+
+<p>Tutaj możesz dodać nowego autora</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Dodaj">
+</form>
+{% endblock %}

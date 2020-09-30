@@ -1,0 +1,8 @@
+{% extends "posts/base.html" %}
+
+{% block title %}Posts list{% endblock %}
+
+{% block content %}
+<p><a href="{% url "posts:posts_list" %}">lista postów</p>
+<p><a href="{% url "posts:authors_list" %}">lista autorów</p>
+{% endblock %}
