@@ -1,17 +1,16 @@
 from django import forms
-from posts.models import Author
+from posts.models import Author, Post
 
-AUTHORS_CHOICES=()
-
-
-
-class PostForm(forms.Form):
-   author = forms.ModelChoiceField(queryset=Author.objects.all())
-   title = forms.CharField()
-   content = forms.CharField(widget=forms.Textarea)
+AUTHORS_CHOICES = ()
 
 
-class AuthorForm(forms.Form):
-   nick = forms.CharField()
-   email = forms.EmailField()
-   bio = forms.CharField(required=False,widget=forms.Textarea)
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["author", "title", "content"]
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ["nick", "email", "bio"]

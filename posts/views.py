@@ -18,7 +18,7 @@ def posts_list(request):
         form = PostForm(data=request.POST)
 
         if form.is_valid():
-            Post.objects.get_or_create(**form.cleaned_data)
+            form.save()
             messages.add_message(
                 request,
                 messages.SUCCESS,
@@ -30,15 +30,16 @@ def posts_list(request):
                 messages.ERROR,
                 form.errors['__all__']
             )
-    posts = Post.objects.all()
-    form = PostForm()
-    return render(
-        request=request,
-        template_name="posts/posts_list.html",
-        context={"posts": posts,
-                 "form": form
-                 }
-    )
+    elif request.method == "GET":
+        posts = Post.objects.all()
+        form = PostForm()
+        return render(
+            request=request,
+            template_name="posts/posts_list.html",
+            context={"posts": posts,
+                     "form": form
+                     }
+        )
 
 
 def post_details(request, id):
@@ -55,7 +56,7 @@ def authors_list(request):
         form = AuthorForm(data=request.POST)
 
         if form.is_valid():
-            Author.objects.get_or_create(**form.cleaned_data)
+            form.save()
             messages.add_message(
                 request,
                 messages.SUCCESS,
@@ -67,15 +68,16 @@ def authors_list(request):
                 messages.ERROR,
                 form.errors['__all__']
             )
-    form = AuthorForm()
-    authors = Author.objects.all()
-    return render(
-        request=request,
-        template_name="posts/authors_list.html",
-        context={"authors": authors,
-                 "form": form
-                 }
-    )
+    elif request.method == "GET":
+        form = AuthorForm()
+        authors = Author.objects.all()
+        return render(
+            request=request,
+            template_name="posts/authors_list.html",
+            context={"authors": authors,
+                     "form": form
+                     }
+        )
 
 
 def author_details(request, id):
